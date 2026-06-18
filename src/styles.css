@@ -1,5 +1,7 @@
 @layer global {
-  *, :before, :after {
+  *,
+  :before,
+  :after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -21,7 +23,7 @@
 
 @layer tkb {
   :root {
-    --_grid: .25rem;
+    --_grid: 0.25rem;
     --color_accent: #6c5ce7;
     --color_border: #2a2a2a;
     --color_danger: #e74c3c;
@@ -29,9 +31,9 @@
     --color_text: #e0e0e0;
     --color_text-muted: #888;
     --color_white: #fff;
-    --font-size_base: .95rem;
+    --font-size_base: 0.95rem;
     --font-size_lg: 1.5rem;
-    --font-size_sm: .78rem;
+    --font-size_sm: 0.78rem;
     --radii_md: 8px;
   }
 

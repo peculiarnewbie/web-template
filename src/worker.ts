@@ -16,7 +16,8 @@ const GetMessages = HttpRouter.route(
   Effect.gen(function* () {
     const db = yield* D1DatabaseTag;
     const { results } = yield* Effect.promise(() =>
-      db.prepare("SELECT id, content, created_at FROM messages ORDER BY created_at DESC LIMIT 50")
+      db
+        .prepare("SELECT id, content, created_at FROM messages ORDER BY created_at DESC LIMIT 50")
         .all<{ id: string; content: string; created_at: string }>(),
     );
     return yield* HttpServerResponse.json(results);
@@ -40,7 +41,8 @@ const PostMessage = HttpRouter.route(
     const createdAt = new Date().toISOString();
 
     yield* Effect.promise(() =>
-      db.prepare("INSERT INTO messages (id, content, created_at) VALUES (?, ?, ?)")
+      db
+        .prepare("INSERT INTO messages (id, content, created_at) VALUES (?, ?, ?)")
         .bind(id, body.content.trim(), createdAt)
         .run(),
     );

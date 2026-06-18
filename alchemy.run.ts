@@ -1,8 +1,6 @@
 import * as Alchemy from "alchemy";
 import * as Cloudflare from "alchemy/Cloudflare";
 import * as Effect from "effect/Effect";
-import { Bucket } from "./src/bucket.ts";
-import Worker from "./src/worker.ts";
 
 export default Alchemy.Stack(
   "WebTemplate",
@@ -11,8 +9,23 @@ export default Alchemy.Stack(
     state: Cloudflare.state(),
   },
   Effect.gen(function* () {
-    yield* Bucket;
-    const worker = yield* Worker;
+    const db = yield* Cloudflare.D1Database("DB", {
+      name: "web-template",
+      migrationsDir: "src/migrations",
+    });
+
+    const worker = yield* Cloudflare.Worker("Worker", {
+      name: "web-template",
+      main: "src/worker.ts",
+      assets: "dist/client",
+      compatibility: {
+        date: "2026-03-22",
+        flags: ["nodejs_compat"],
+      },
+      env: {
+        DB: db,
+      },
+    });
 
     return {
       url: worker.url,

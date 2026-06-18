@@ -20,4 +20,9 @@ describe("example", () => {
     );
     expect(result).toBe("Hello, Layer!");
   });
+
+  it("should compose effects without dependency", async () => {
+    const result = await Effect.runPromise(Effect.succeed("standalone"));
+    expect(result).toBe("standalone");
+  });
 });
